@@ -20,7 +20,7 @@ func TestPartOneExample(t *testing.T) {
 	}
 
 	fmt.Printf("PartOneExample: %d\n", result)
-	expected := 2
+	expected := 7
 	if result != expected {
 		t.Fatalf("expected %d got %d", expected, result)
 	}
@@ -39,7 +39,7 @@ func TestPartOne(t *testing.T) {
 	}
 
 	fmt.Printf("PartOne: %d\n", result)
-	expected := 509
+	expected := 1625
 	if result != expected {
 		t.Fatalf("expected %d got %d", expected, result)
 	}
@@ -58,7 +58,7 @@ func TestPartTwoExample(t *testing.T) {
 	}
 
 	fmt.Printf("PartTwoExample: %d\n", result)
-	expected := 4
+	expected := 19
 	if result != expected {
 		t.Fatalf("expected %d got %d", expected, result)
 	}
@@ -76,7 +76,7 @@ func TestPartTwo(t *testing.T) {
 	}
 
 	fmt.Printf("PartTwo: %d\n", result)
-	expected := 870
+	expected := 2250
 	if result != expected {
 		t.Fatalf("expected %d got %d", expected, result)
 	}
