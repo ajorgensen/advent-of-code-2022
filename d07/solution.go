@@ -11,7 +11,7 @@ import (
 
 type Cmd struct {
 	Command string
-	Output []string
+	Output  []string
 }
 
 func (c *Cmd) Args() []string {
@@ -28,10 +28,10 @@ func (c *Cmd) AddOutput(output string) {
 }
 
 type File struct {
-	Name string
-	Parent *File
-	Type string
-	Size int
+	Name     string
+	Parent   *File
+	Type     string
+	Size     int
 	Children []*File
 }
 
@@ -54,10 +54,6 @@ func (f *File) Cd(path string) (*File, error) {
 		if child.Name == path {
 			return child, nil
 		}
-	}
-
-	for _, child := range f.Children {
-		fmt.Println(child.Name)
 	}
 
 	return f, fmt.Errorf("NotFound %s in %s", path, f.Name)
@@ -84,16 +80,16 @@ func (f *File) String() string {
 
 func (f *File) Tree(depth int) string {
 	indent := ""
-	for i := 0; i < depth; i+= 1 {
+	for i := 0; i < depth; i += 1 {
 		indent += "."
 	}
 
-	lines := []string {
+	lines := []string{
 		fmt.Sprintf("%s%s", indent, f.String()),
 	}
 
 	for _, child := range f.Children {
-		lines = append(lines, child.Tree(depth + 1))
+		lines = append(lines, child.Tree(depth+1))
 	}
 
 	return strings.Join(lines, "\n")
@@ -114,10 +110,9 @@ func PartOne(r io.Reader) (int, error) {
 	rec = func(c *File) int {
 		total := 0
 
-		if c.Type == "dir" && c.TotalSize() <= 100000  {
-			fmt.Printf("Found %s with size %d\n", c.Name, c.TotalSize())
+		if c.Type == "dir" && c.TotalSize() <= 100000 {
 			total += c.TotalSize()
-		} 
+		}
 
 		for _, child := range c.Children {
 			total += rec(child)
@@ -127,7 +122,6 @@ func PartOne(r io.Reader) (int, error) {
 	}
 
 	total := rec(fs)
-	fmt.Println(fs.Tree(0))
 
 	return total, nil
 }
@@ -148,7 +142,7 @@ func PartTwo(r io.Reader) (int, error) {
 	need := 30000000
 
 	type kv struct {
-		Key string
+		Key   string
 		Value int
 	}
 
@@ -157,7 +151,7 @@ func PartTwo(r io.Reader) (int, error) {
 	rec = func(f *File) {
 		if f.Type == "dir" {
 			dirs = append(dirs, kv{f.Name, f.TotalSize()})
-		} 
+		}
 
 		for _, c := range f.Children {
 			rec(c)
@@ -181,12 +175,12 @@ func PartTwo(r io.Reader) (int, error) {
 }
 
 func buildFilesystem(commands []Cmd) (*File, error) {
-	fs := &File {
+	fs := &File{
 		Name: "",
 		Children: []*File{
 			{
-				Name: "/",
-				Type: "dir",
+				Name:     "/",
+				Type:     "dir",
 				Children: make([]*File, 0),
 			},
 		},
@@ -200,7 +194,6 @@ func buildFilesystem(commands []Cmd) (*File, error) {
 
 			curr, err = curr.Cd(path)
 			if err != nil {
-				fmt.Print(fs.Tree(0))
 				return fs, err
 			}
 		}
@@ -212,8 +205,8 @@ func buildFilesystem(commands []Cmd) (*File, error) {
 				if strings.HasPrefix(out, "dir") {
 					curr.AddChild(
 						&File{
-							Name: parts[1],
-							Type: parts[0],
+							Name:     parts[1],
+							Type:     parts[0],
 							Children: make([]*File, 0),
 						},
 					)
@@ -225,9 +218,9 @@ func buildFilesystem(commands []Cmd) (*File, error) {
 
 					curr.AddChild(
 						&File{
-							Name: parts[1],
-							Type: "file",
-							Size: size,
+							Name:     parts[1],
+							Type:     "file",
+							Size:     size,
 							Children: make([]*File, 0),
 						},
 					)
@@ -251,10 +244,10 @@ func parseInput(r io.Reader) ([]Cmd, error) {
 		if strings.HasPrefix(line, "$") {
 			commands = append(commands, Cmd{
 				Command: line[2:],
-				Output: make([]string, 0),
+				Output:  make([]string, 0),
 			})
 		} else {
-			commands[len(commands) - 1].AddOutput(line)
+			commands[len(commands)-1].AddOutput(line)
 		}
 	}
 
